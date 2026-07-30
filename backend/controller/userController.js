@@ -19,11 +19,19 @@ const getUser = async (req, res, next) => {
   try {
     const { query } = req;
     let userData = await UserDAO.getUser(query);
-    res.json({
-      success: true,
-      message: "User fetched successfully",
-      data: userData,
-    });
+    if (userData && userData.length > 0) {
+      res.json({
+        success: true,
+        message: "User fetched successfully",
+        data: userData,
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "Invalid email or password",
+        data: [],
+      });
+    }
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error?.message, data: [] });

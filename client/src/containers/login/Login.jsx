@@ -15,7 +15,7 @@ const Login = () => {
     console.log(values);
     axios
       .get(
-        `http://localhost:3000/user?email=${values?.username}&password=${values?.password}`
+        `http://localhost:3000/user?email=${values?.email}&password=${values?.password}`
       )
       .then((response) => {
         alert(response?.data?.message);
@@ -46,9 +46,9 @@ const Login = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
           >
             <Input />
           </Form.Item>
