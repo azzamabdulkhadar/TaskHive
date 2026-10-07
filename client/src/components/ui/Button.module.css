@@ -1,0 +1,74 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast),
+              transform var(--transition-fast), opacity var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+  outline: none;
+}
+.btn:active:not(:disabled) { transform: scale(0.97); }
+.btn:focus-visible { box-shadow: var(--shadow-focus); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Sizes */
+.sm  { height: 32px; padding: 0 var(--space-3); font-size: var(--font-size-sm); border-radius: var(--radius-sm); }
+.md  { height: 38px; padding: 0 var(--space-4); font-size: var(--font-size-base); }
+.lg  { height: 44px; padding: 0 var(--space-6); font-size: var(--font-size-md); }
+.xl  { height: 52px; padding: 0 var(--space-8); font-size: var(--font-size-lg); }
+
+/* Variants */
+.primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.primary:hover:not(:disabled) { background: var(--color-primary-hover); box-shadow: var(--shadow-sm); }
+
+.secondary {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+.secondary:hover:not(:disabled) { background: var(--color-border); }
+
+.ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+.ghost:hover:not(:disabled) { background: var(--color-bg-secondary); color: var(--color-text); }
+
+.danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+.danger:hover:not(:disabled) { background: #dc2626; }
+
+.danger-ghost {
+  background: transparent;
+  color: var(--color-danger);
+}
+.danger-ghost:hover:not(:disabled) { background: var(--color-danger-light); }
+
+.outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+.outline:hover:not(:disabled) { background: var(--color-primary-light); }
+
+/* Fullwidth */
+.fullWidth { width: 100%; }
+
+/* Loading */
+.loading { pointer-events: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 0.7s linear infinite; }
+
+.iconLeft, .iconRight { display: flex; align-items: center; }

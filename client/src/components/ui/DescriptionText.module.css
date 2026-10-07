@@ -1,0 +1,30 @@
+.desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  /* allow wrapping — NO white-space:nowrap */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
+}
+
+.ellipsis {
+  /* inline before the toggle */
+  margin-right: var(--space-1);
+}
+
+.toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+.toggle:hover { color: var(--color-primary-hover); }

@@ -1,0 +1,177 @@
+.page { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.toolbar { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+/* Pipeline */
+.pipeline { display: flex; gap: var(--space-2); flex-wrap: wrap; overflow-x: auto; }
+.pipelineChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+.pipelineChip:hover { background: var(--color-bg-secondary); }
+.pipelineChip.active {
+  background: var(--pb);
+  color: var(--pc);
+  border-color: color-mix(in srgb, var(--pc) 40%, transparent);
+}
+.pipelineDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pc);
+  flex-shrink: 0;
+}
+.pipelineCount {
+  background: color-mix(in srgb, var(--pc) 18%, var(--color-surface));
+  color: var(--pc);
+  border-radius: var(--radius-full);
+  padding: 0 6px;
+  font-size: var(--font-size-xs);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Table */
+.tableWrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Fixed layout: browser respects explicit column widths */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Column widths — all columns accounted for, uses table-layout: fixed */
+.colName     { width: 30%; }
+.colContact  { width: 22%; }
+.colStatus   { width: 12%; }
+.colPrio     { width: 12%; }
+.colFollowup { width: 14%; }
+.colActions  { width: 80px; }
+
+.th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  /* prevent header text overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  /* content must wrap inside its column — never overflow */
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.tableRow:last-child .td { border-bottom: none; }
+.tableRow:hover .td { background: var(--color-bg-secondary); }
+
+.leadName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  /* name itself stays on one line */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.leadCompany {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Description: wraps freely inside the Name column.
+   DescriptionText JS handles the preview — no CSS clamp. */
+.leadDesc {
+  font-size: var(--font-size-xs) !important;
+  color: var(--color-text-muted) !important;
+  margin-top: var(--space-2);
+  overflow: visible;
+  display: block;
+  line-height: var(--line-height-relaxed);
+  /* allow the description to wrap naturally */
+  white-space: normal;
+  word-break: break-word;
+}
+
+.contact { display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+.contact + .contact { margin-top: 3px; }
+
+.dateText { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+.rowActions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+.tableRow:hover .rowActions { opacity: 1; }
+
+.actionBtn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.actionBtn:hover { background: var(--color-bg-secondary); color: var(--color-text); }
+.actionBtn.danger:hover { background: var(--color-danger-light); color: var(--color-danger); }
+
+.skeletonRow { height: 60px; border-radius: var(--radius-md); }
+
+@media (max-width: 768px) {
+  .content { padding: var(--space-4); }
+  .pipeline { display: none; }
+  .th:nth-child(4), .td:nth-child(4) { display: none; }
+  .th:nth-child(5), .td:nth-child(5) { display: none; }
+}

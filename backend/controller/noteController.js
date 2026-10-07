@@ -1,63 +1,88 @@
-const { NoteDAO } = require("../dao");
+const { noteDAO, activityDAO } = require("../dao");
 
-const saveNote = async (req, res, next) => {
+// GET /api/v1/notes
+const getNotes = async (req, res, next) => {
   try {
-    const { body } = req;
-    let savedNoteData = await NoteDAO.saveNote(body);
-    res.json({
-      success: true,
-      message: "Note saved successfully",
-      data: savedNoteData,
-    });
+    const { search, priority, isArchived, isPinned, page = 1, limit = 50 } = req.query;
+    const userId = req.user._id;
+
+    const filters = {
+      userId,
+      search,
+      priority,
+      page: Number(page),
+      limit: Number(limit),
+    };
+    if (isArchived !== undefined) filters.isArchived = isArchived === "true";
+    if (isPinned !== undefined) filters.isPinned = isPinned === "true";
+
+    const [notes, total] = await Promise.all([
+      noteDAO.getNotes(filters),
+      noteDAO.countNotes({ userId, isArchived: filters.isArchived }),
+    ]);
+
+    res.json({ success: true, message: "Notes fetched successfully.", data: { notes, total, page: Number(page), limit: Number(limit) } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
-const getNote = async (req, res, next) => {
+// GET /api/v1/notes/:id
+const getNoteById = async (req, res, next) => {
   try {
-    const { query } = req;
-    let noteData = await NoteDAO.getNote(query);
-    res.json({
-      success: true,
-      message: "Note fetched successfully",
-      data: noteData,
-    });
+    const note = await noteDAO.getNoteById(req.params.id, req.user._id);
+    if (!note) return res.status(404).json({ success: false, message: "Note not found.", data: null });
+    res.json({ success: true, message: "Note fetched successfully.", data: { note } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
+// POST /api/v1/notes
+const createNote = async (req, res, next) => {
+  try {
+    const { title, content, tags, category, priority, color, isPinned, file } = req.body;
+    if (!title) return res.status(400).json({ success: false, message: "Title is required.", data: null });
+
+    const note = await noteDAO.createNote({
+      title, content, tags, category, priority, color, isPinned, file,
+      user: req.user._id,
+    });
+
+    await activityDAO.logActivity({ user: req.user._id, entityType: "note", entityId: note._id, entityTitle: note.title, action: "CREATE" });
+
+    res.status(201).json({ success: true, message: "Note created successfully.", data: { note } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// PATCH /api/v1/notes/:id
 const updateNote = async (req, res, next) => {
   try {
-    const { params, body } = req;
-    let noteData = await NoteDAO.updateNote(params, body);
-    res.json({
-      success: true,
-      message: "Note updated successfully",
-      data: noteData,
-    });
+    const note = await noteDAO.updateNote(req.params.id, req.user._id, req.body);
+    if (!note) return res.status(404).json({ success: false, message: "Note not found.", data: null });
+
+    await activityDAO.logActivity({ user: req.user._id, entityType: "note", entityId: note._id, entityTitle: note.title, action: "UPDATE" });
+
+    res.json({ success: true, message: "Note updated successfully.", data: { note } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
+// DELETE /api/v1/notes/:id
 const deleteNote = async (req, res, next) => {
   try {
-    const { params } = req;
-    let noteData = await NoteDAO.deleteNote(params);
-    res.json({
-      success: true,
-      message: "Note deleted successfully",
-      data: noteData,
-    });
+    const note = await noteDAO.deleteNote(req.params.id, req.user._id);
+    if (!note) return res.status(404).json({ success: false, message: "Note not found.", data: null });
+
+    await activityDAO.logActivity({ user: req.user._id, entityType: "note", entityId: note._id, entityTitle: note.title, action: "DELETE" });
+
+    res.json({ success: true, message: "Note deleted successfully.", data: null });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
-module.exports = { saveNote, getNote, updateNote, deleteNote };
+module.exports = { getNotes, getNoteById, createNote, updateNote, deleteNote };

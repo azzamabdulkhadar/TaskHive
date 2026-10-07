@@ -1,40 +1,14 @@
 const { UserModel } = require("../model");
 
-const saveUser = async (data) => {
-  try {
-    return await UserModel.create([data]);
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const createUser = (data) => UserModel.create(data);
 
-const getUser = async (query) => {
-  try {
-    console.log(query);
-    return await UserModel.find(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const findUserByEmail = (email) => UserModel.findOne({ email }).select("+password");
 
-const updateUser = async (query, data) => {
-  try {
-    return await UserModel.findOneAndUpdate(query, data, { new: true }).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const findUserById = (id) => UserModel.findById(id);
 
-const deleteUser = async (query) => {
-  try {
-    return await UserModel.findOneAndDelete(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const updateUser = (id, data) =>
+  UserModel.findByIdAndUpdate(id, data, { new: true, runValidators: true });
 
-module.exports = { saveUser, getUser, updateUser, deleteUser };
+const deleteUser = (id) => UserModel.findByIdAndDelete(id);
+
+module.exports = { createUser, findUserByEmail, findUserById, updateUser, deleteUser };
