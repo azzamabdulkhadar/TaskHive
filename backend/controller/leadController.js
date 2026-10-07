@@ -1,63 +1,85 @@
-const { LeadDAO } = require("../dao");
+const { leadDAO, activityDAO } = require("../dao");
 
-const saveLead = async (req, res, next) => {
+// GET /api/v1/leads
+const getLeads = async (req, res, next) => {
   try {
-    const { body } = req;
-    let savedLeadData = await LeadDAO.saveLead(body);
-    res.json({
-      success: true,
-      message: "Lead saved successfully",
-      data: savedLeadData,
-    });
+    const { search, status, priority, page = 1, limit = 20 } = req.query;
+    const userId = req.user._id;
+
+    const [leads, total] = await Promise.all([
+      leadDAO.getLeads({ userId, search, status, priority, page: Number(page), limit: Number(limit) }),
+      leadDAO.countLeads({ userId, status }),
+    ]);
+
+    res.json({ success: true, message: "Leads fetched successfully.", data: { leads, total, page: Number(page), limit: Number(limit) } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
-const getLead = async (req, res, next) => {
+// GET /api/v1/leads/:id
+const getLeadById = async (req, res, next) => {
   try {
-    const { query } = req;
-    let leadData = await LeadDAO.getLead(query);
-    res.json({
-      success: true,
-      message: "Lead fetched successfully",
-      data: leadData,
-    });
+    const lead = await leadDAO.getLeadById(req.params.id, req.user._id);
+    if (!lead) return res.status(404).json({ success: false, message: "Lead not found.", data: null });
+    res.json({ success: true, message: "Lead fetched successfully.", data: { lead } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
+// POST /api/v1/leads
+const createLead = async (req, res, next) => {
+  try {
+    const { name, company, email, phone, alternatePhone, type, source, status, priority, tags, description, visitReason, nextFollowUpAt } = req.body;
+    if (!name) return res.status(400).json({ success: false, message: "Name is required.", data: null });
+
+    const lead = await leadDAO.createLead({
+      name, company, email, phone, alternatePhone, type, source, status, priority,
+      tags, description, visitReason, nextFollowUpAt,
+      user: req.user._id,
+    });
+
+    await activityDAO.logActivity({ user: req.user._id, entityType: "lead", entityId: lead._id, entityTitle: lead.name, action: "CREATE" });
+
+    res.status(201).json({ success: true, message: "Lead created successfully.", data: { lead } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// PATCH /api/v1/leads/:id
 const updateLead = async (req, res, next) => {
   try {
-    const { params, body } = req;
-    let leadData = await LeadDAO.updateLead(params, body);
-    res.json({
-      success: true,
-      message: "Lead updated successfully",
-      data: leadData,
+    const prevLead = await leadDAO.getLeadById(req.params.id, req.user._id);
+    if (!prevLead) return res.status(404).json({ success: false, message: "Lead not found.", data: null });
+
+    const lead = await leadDAO.updateLead(req.params.id, req.user._id, req.body);
+
+    const action = req.body.status && req.body.status !== prevLead.status ? "STATUS_CHANGE" : "UPDATE";
+    await activityDAO.logActivity({
+      user: req.user._id, entityType: "lead", entityId: lead._id, entityTitle: lead.name, action,
+      metadata: action === "STATUS_CHANGE" ? { from: prevLead.status, to: lead.status } : {},
     });
+
+    res.json({ success: true, message: "Lead updated successfully.", data: { lead } });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
+// DELETE /api/v1/leads/:id
 const deleteLead = async (req, res, next) => {
   try {
-    const { params } = req;
-    let leadData = await LeadDAO.deleteLead(params);
-    res.json({
-      success: true,
-      message: "Lead deleted successfully",
-      data: leadData,
-    });
+    const lead = await leadDAO.deleteLead(req.params.id, req.user._id);
+    if (!lead) return res.status(404).json({ success: false, message: "Lead not found.", data: null });
+
+    await activityDAO.logActivity({ user: req.user._id, entityType: "lead", entityId: lead._id, entityTitle: lead.name, action: "DELETE" });
+
+    res.json({ success: true, message: "Lead deleted successfully.", data: null });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error?.message, data: [] });
+    next(error);
   }
 };
 
-module.exports = { saveLead, getLead, updateLead, deleteLead };
+module.exports = { getLeads, getLeadById, createLead, updateLead, deleteLead };

@@ -1,39 +1,34 @@
 const { LeadModel } = require("../model");
 
-const saveLead = async (data) => {
-  try {
-    return await LeadModel.create([data]);
-  } catch (error) {
-    console.log(error);
-    throw error;
+const getLeads = ({ userId, search, status, priority, page = 1, limit = 20 }) => {
+  const query = { user: userId };
+  if (status) query.status = status;
+  if (priority) query.priority = priority;
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { company: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+      { phone: { $regex: search, $options: "i" } },
+    ];
   }
+  const skip = (page - 1) * limit;
+  return LeadModel.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
 };
 
-const getLead = async (query) => {
-  try {
-    return await LeadModel.find(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+const countLeads = ({ userId, status }) => {
+  const query = { user: userId };
+  if (status) query.status = status;
+  return LeadModel.countDocuments(query);
 };
 
-const updateLead = async (query, data) => {
-  try {
-    return await LeadModel.findOneAndUpdate(query, data, { new: true }).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const getLeadById = (id, userId) => LeadModel.findOne({ _id: id, user: userId });
 
-const deleteLead = async (query) => {
-  try {
-    return await LeadModel.findOneAndDelete(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const createLead = (data) => LeadModel.create(data);
 
-module.exports = { saveLead, getLead, updateLead, deleteLead };
+const updateLead = (id, userId, data) =>
+  LeadModel.findOneAndUpdate({ _id: id, user: userId }, data, { new: true, runValidators: true });
+
+const deleteLead = (id, userId) => LeadModel.findOneAndDelete({ _id: id, user: userId });
+
+module.exports = { getLeads, countLeads, getLeadById, createLead, updateLead, deleteLead };

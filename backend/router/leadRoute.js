@@ -1,10 +1,14 @@
 const express = require("express");
-const { LeadController } = require("../controller");
-const leadRouter = express.Router();
+const router = express.Router();
+const { leadController } = require("../controller");
+const { authenticate } = require("../middleware");
 
-leadRouter.get("/", LeadController.getLead);
-leadRouter.post("/", LeadController.saveLead);
-leadRouter.put("/:_id", LeadController.updateLead);
-leadRouter.delete("/:_id", LeadController.deleteLead);
+router.use(authenticate);
 
-module.exports = leadRouter;
+router.get("/", leadController.getLeads);
+router.get("/:id", leadController.getLeadById);
+router.post("/", leadController.createLead);
+router.patch("/:id", leadController.updateLead);
+router.delete("/:id", leadController.deleteLead);
+
+module.exports = router;

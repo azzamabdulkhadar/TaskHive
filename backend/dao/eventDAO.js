@@ -1,39 +1,30 @@
 const { EventModel } = require("../model");
 
-const saveEvent = async (data) => {
-  try {
-    return await EventModel.create([data]);
-  } catch (error) {
-    console.log(error);
-    throw error;
+const getEvents = ({ userId, status, startDate, endDate, page = 1, limit = 100 }) => {
+  const query = { user: userId };
+  if (status) query.status = status;
+  if (startDate || endDate) {
+    query.startDate = {};
+    if (startDate) query.startDate.$gte = new Date(startDate);
+    if (endDate) query.startDate.$lte = new Date(endDate);
   }
+  const skip = (page - 1) * limit;
+  return EventModel.find(query).sort({ startDate: 1 }).skip(skip).limit(limit);
 };
 
-const getEvent = async (query) => {
-  try {
-    return await EventModel.find(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+const countEvents = ({ userId, status }) => {
+  const query = { user: userId };
+  if (status) query.status = status;
+  return EventModel.countDocuments(query);
 };
 
-const updateEvent = async (query, data) => {
-  try {
-    return await EventModel.findOneAndUpdate(query, data, { new: true }).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const getEventById = (id, userId) => EventModel.findOne({ _id: id, user: userId });
 
-const deleteEvent = async (query) => {
-  try {
-    return await EventModel.findOneAndDelete(query).exec();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+const createEvent = (data) => EventModel.create(data);
 
-module.exports = { saveEvent, getEvent, updateEvent, deleteEvent };
+const updateEvent = (id, userId, data) =>
+  EventModel.findOneAndUpdate({ _id: id, user: userId }, data, { new: true, runValidators: true });
+
+const deleteEvent = (id, userId) => EventModel.findOneAndDelete({ _id: id, user: userId });
+
+module.exports = { getEvents, countEvents, getEventById, createEvent, updateEvent, deleteEvent };

@@ -1,0 +1,214 @@
+.page { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Greeting */
+.greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.greetingText {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+.greetingSub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  text-decoration: none;
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+.statCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statValue {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+.statLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Two column */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.seeAll {
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Event list */
+.eventList { display: flex; flex-direction: column; gap: var(--space-2); }
+.eventItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  transition: background var(--transition-fast);
+}
+.eventItem:hover { background: var(--color-border); }
+.eventDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.eventBody { flex: 1; min-width: 0; }
+.eventTitle { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.eventDate { font-size: var(--font-size-xs); color: var(--color-text-muted); display: flex; align-items: center; gap: 3px; margin-top: 2px; }
+
+/* Activity */
+.activityList { display: flex; flex-direction: column; gap: var(--space-3); }
+.activityItem { display: flex; align-items: flex-start; gap: var(--space-3); }
+.activityIcon { width: 28px; height: 28px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.activityBody { flex: 1; }
+.activityTitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); display: block; text-transform: capitalize; }
+.activityTime { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+/* Quick actions */
+.quickGrid { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+.quickCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--qa) 10%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--qa) 25%, var(--color-border));
+  border-radius: var(--radius-lg);
+  color: var(--qa);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.quickCard:hover { background: color-mix(in srgb, var(--qa) 18%, var(--color-surface)); transform: translateY(-1px); color: var(--qa); }
+
+/* Skeletons */
+.skeletonList { display: flex; flex-direction: column; gap: var(--space-2); }
+.skeletonRow { height: 44px; border-radius: var(--radius-md); }
+
+@media (max-width: 1100px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+  .twoCol { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .statsGrid { grid-template-columns: 1fr; }
+  .content { padding: var(--space-4); }
+}
+
+/* ── Charts ──────────────────────────────────────────────────────────── */
+.chartsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.chartCard { padding: var(--space-5); }
+
+.chartArea {
+  margin-top: var(--space-3);
+  /* recharts needs a sized container */
+}
+
+.chartSkeleton {
+  height: 200px;
+  margin-top: var(--space-3);
+}
+
+.chartTooltip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chartTooltipLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+.chartTooltipVal {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+@media (max-width: 1100px) {
+  .chartsRow { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .chartsRow { grid-template-columns: 1fr; }
+}

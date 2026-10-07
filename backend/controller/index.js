@@ -1,11 +1,7 @@
-const UserController = require("./userController");
-const NoteController = require("./noteController");
-const LeadController = require("./leadController");
-const EventController = require("./eventController");
+const userController = require("./userController");
+const noteController = require("./noteController");
+const leadController = require("./leadController");
+const eventController = require("./eventController");
+const activityController = require("./activityController");
 
-module.exports = {
-  UserController,
-  NoteController,
-  LeadController,
-  EventController,
-};
+module.exports = { userController, noteController, leadController, eventController, activityController };

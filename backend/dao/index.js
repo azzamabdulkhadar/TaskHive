@@ -1,6 +1,7 @@
-const UserDAO = require("./userDAO");
-const NoteDAO = require("./noteDAO");
-const LeadDAO = require("./leadDAO");
-const EventDAO = require("./eventDAO");
+const userDAO = require("./userDAO");
+const noteDAO = require("./noteDAO");
+const leadDAO = require("./leadDAO");
+const eventDAO = require("./eventDAO");
+const activityDAO = require("./activityDAO");
 
-module.exports = { UserDAO, NoteDAO, LeadDAO, EventDAO };
+module.exports = { userDAO, noteDAO, leadDAO, eventDAO, activityDAO };

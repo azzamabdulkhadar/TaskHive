@@ -1,0 +1,173 @@
+.page { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Filter chips */
+.toolbar { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.filterChip {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.filterChip:hover { background: var(--color-bg-secondary); }
+.filterChip.activeChip {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Event groups */
+.eventGroups { display: flex; flex-direction: column; gap: var(--space-6); }
+.eventGroup  { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.groupDate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.groupDateText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.groupLine {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* Event card */
+.eventCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+.eventCard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.eventCard.overdue { border-color: var(--color-warning); background: var(--color-warning-light); }
+
+/* Date badge */
+.eventDateBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 52px;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+.eventDay { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-primary); line-height: 1; }
+.eventMonth { font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); color: var(--color-primary-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.eventBody { flex: 1; min-width: 0; }
+.eventHeader { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; margin-bottom: 4px; }
+.eventTitle { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text); }
+.eventDesc {
+  /* DescriptionText handles its own wrapping — only provide margin here */
+  margin-bottom: 6px;
+}
+.eventMeta { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.metaItem { display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+/* Actions */
+.eventActions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+.eventCard:hover .eventActions { opacity: 1; }
+
+.actionBtn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.actionBtn:hover  { background: var(--color-bg-secondary); color: var(--color-text); }
+.actionBtn.danger:hover { background: var(--color-danger-light); color: var(--color-danger); }
+
+/* Skeletons */
+.skeletonList { display: flex; flex-direction: column; gap: var(--space-3); }
+.skeletonRow { height: 80px; border-radius: var(--radius-xl); }
+
+@media (max-width: 640px) {
+  .content { padding: var(--space-4); }
+  .eventCard { flex-wrap: wrap; }
+  .eventDateBadge { width: 42px; height: 44px; }
+}
+
+/* ── Notification permission banner ─────────────────────────── */
+.notifBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-info-light);
+  border: 1px solid var(--color-info);
+  border-radius: var(--radius-lg);
+  color: var(--color-info);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+.notifBanner span { flex: 1; }
+
+.notifAllow {
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-info);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+.notifAllow:hover { opacity: 0.88; }
+
+.notifDismiss {
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: none;
+  color: var(--color-info);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+.notifDismiss:hover { opacity: 1; }
