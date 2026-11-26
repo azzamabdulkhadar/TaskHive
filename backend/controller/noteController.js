@@ -41,11 +41,11 @@ const getNoteById = async (req, res, next) => {
 // POST /api/v1/notes
 const createNote = async (req, res, next) => {
   try {
-    const { title, content, tags, category, priority, color, isPinned, file } = req.body;
+    const { title, content, tags, category, priority, color, isPinned, file, fileName, fileType } = req.body;
     if (!title) return res.status(400).json({ success: false, message: "Title is required.", data: null });
 
     const note = await noteDAO.createNote({
-      title, content, tags, category, priority, color, isPinned, file,
+      title, content, tags, category, priority, color, isPinned, file, fileName, fileType,
       user: req.user._id,
     });
 

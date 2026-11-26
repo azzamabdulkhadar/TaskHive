@@ -7,8 +7,9 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
+const fs = require("fs");
 
-const { UserRouter, NoteRouter, LeadRouter, EventRouter, ActivityRouter } = require("./router");
+const { UserRouter, NoteRouter, LeadRouter, EventRouter, ActivityRouter, DayTaskRouter } = require("./router");
 const { errorHandler } = require("./middleware");
 
 const app = express();
@@ -71,6 +72,14 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // ─── Static Files (Uploads) ───────────────────────────────────────────────────
+// multer does not create the destination folder, so make sure it exists
+fs.mkdirSync(path.join(__dirname, "uploads"), { recursive: true });
+// Let the frontend embed uploaded files (PDF viewer iframe). Helmet blocks framing by default.
+app.use("/uploads", (req, res, next) => {
+  res.removeHeader("X-Frame-Options");
+  res.setHeader("Content-Security-Policy", `frame-ancestors 'self' ${allowedOrigins.join(" ")}`);
+  next();
+});
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ─── File Upload (Multer) ─────────────────────────────────────────────────────
@@ -84,7 +93,16 @@ const ALLOWED_MIME_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   "text/plain",
+  "text/csv",
+  "text/markdown",
+  "application/json",
+  "video/mp4",
+  "video/webm",
+  "audio/mpeg",
+  "audio/wav",
 ];
 
 const storage = multer.diskStorage({
@@ -149,7 +167,14 @@ app.post("/api/v1/upload", authenticate, upload.single("file"), (req, res, next)
   res.json({
     success: true,
     message: "File uploaded successfully",
-    data: { url: fileUrl, filename: req.file.filename, mimetype: req.file.mimetype, size: req.file.size },
+    data: {
+      url: fileUrl,
+      filename: req.file.filename,
+      // multer reads the original name as latin1; restore UTF-8
+      originalName: Buffer.from(req.file.originalname, "latin1").toString("utf8"),
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+    },
   });
 });
 
@@ -159,6 +184,7 @@ app.use("/api/v1/notes", NoteRouter);
 app.use("/api/v1/leads", LeadRouter);
 app.use("/api/v1/events", EventRouter);
 app.use("/api/v1/activity", ActivityRouter);
+app.use("/api/v1/day-tasks", DayTaskRouter);
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
 app.use((req, res) => {

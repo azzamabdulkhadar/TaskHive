@@ -1,0 +1,8 @@
+.wrap { display: flex; flex-direction: column; gap: var(--space-1); }
+.toolbar { display: flex; gap: 2px; }
+.btn {
+  width: 28px; height: 28px; border: 1px solid var(--color-border); background: var(--color-surface);
+  color: var(--color-text-secondary); border-radius: var(--radius-sm); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn:hover { background: var(--color-bg-secondary); color: var(--color-primary); }

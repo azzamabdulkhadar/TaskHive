@@ -34,3 +34,5 @@ backend/uploads
 
 # Local files
 *.local
+
+backend/uploads/

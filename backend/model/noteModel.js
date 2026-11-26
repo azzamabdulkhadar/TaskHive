@@ -15,6 +15,8 @@ const noteSchema = new mongoose.Schema(
     isPinned: { type: Boolean, default: false },
     isArchived: { type: Boolean, default: false },
     file: { type: String, default: "" }, // URL to uploaded attachment
+    fileName: { type: String, default: "" }, // original file name
+    fileType: { type: String, default: "" }, // MIME type
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
