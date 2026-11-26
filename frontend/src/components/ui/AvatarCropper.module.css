@@ -1,0 +1,18 @@
+.wrap { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+.stage:active { cursor: grabbing; }
+.stage img { position: absolute; top: 50%; left: 50%; max-width: none; pointer-events: none; }
+.hint { display: flex; align-items: center; gap: 5px; margin: 0; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.zoomRow { display: flex; align-items: center; gap: var(--space-2); width: 100%; max-width: 280px; }
+.zoomRow input { flex: 1; accent-color: var(--color-primary); }
+.zoomRow button { border: none; background: transparent; color: var(--color-text-muted); cursor: pointer; display: flex; padding: 4px; border-radius: var(--radius-sm); }
+.zoomRow button:hover { color: var(--color-primary); background: var(--color-bg-secondary); }

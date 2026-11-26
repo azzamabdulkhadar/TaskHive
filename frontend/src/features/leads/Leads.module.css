@@ -1,0 +1,271 @@
+.page { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.toolbar { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+/* Pipeline */
+.pipeline { display: flex; gap: var(--space-2); flex-wrap: wrap; overflow-x: auto; }
+.pipelineChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+.pipelineChip:hover { background: var(--color-bg-secondary); }
+.pipelineChip.active {
+  background: var(--pb);
+  color: var(--pc);
+  border-color: color-mix(in srgb, var(--pc) 40%, transparent);
+}
+.pipelineDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pc);
+  flex-shrink: 0;
+}
+.pipelineCount {
+  background: color-mix(in srgb, var(--pc) 18%, var(--color-surface));
+  color: var(--pc);
+  border-radius: var(--radius-full);
+  padding: 0 6px;
+  font-size: var(--font-size-xs);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Table */
+.tableWrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Fixed layout: browser respects explicit column widths */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Column widths — all columns accounted for, uses table-layout: fixed */
+.colName     { width: 30%; }
+.colContact  { width: 22%; }
+.colStatus   { width: 12%; }
+.colPrio     { width: 12%; }
+.colFollowup { width: 14%; }
+.colActions  { width: 110px; }
+
+.th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  /* prevent header text overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  /* content must wrap inside its column — never overflow */
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.leadGroup:last-child .td,
+.leadGroup:last-child .detailCell { border-bottom: none; }
+.leadGroup:hover .td,
+.leadGroup:hover .detailCell { background: var(--color-bg-secondary); }
+.hasDetails .td { border-bottom: none; padding-bottom: var(--space-1); }
+
+/* Full-width row under the main row: tags + description */
+.detailCell {
+  padding: 0 var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+}
+.tagList { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-2); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Expired (follow-up date passed on an open lead) */
+.expired .tableRow .td:first-child,
+.expired .detailRow .detailCell { box-shadow: inset 3px 0 0 var(--color-danger); }
+.expired .detailRow .detailCell { box-shadow: inset 3px 0 0 var(--color-danger); }
+.dateExpired { color: var(--color-danger); font-weight: var(--font-weight-medium); }
+.expiredBadge {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.leadName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  /* name itself stays on one line */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.leadCompany {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Description: wraps freely inside the Name column.
+   DescriptionText JS handles the preview — no CSS clamp. */
+.leadDesc {
+  margin: 0;
+  max-width: none;
+  font-size: var(--font-size-xs) !important;
+  color: var(--color-text-muted) !important;
+  overflow: visible;
+  display: block;
+  line-height: var(--line-height-relaxed);
+  /* allow the description to wrap naturally */
+  white-space: normal;
+  word-break: break-word;
+}
+
+.contact { display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+.contact + .contact { margin-top: 3px; }
+
+.dateText { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+.rowActions {
+  display: flex;
+  gap: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+.tableRow:hover .rowActions { opacity: 1; }
+
+.actionBtn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.actionBtn:hover { background: var(--color-bg-secondary); color: var(--color-text); }
+.actionBtn.danger:hover { background: var(--color-danger-light); color: var(--color-danger); }
+
+.skeletonRow { height: 60px; border-radius: var(--radius-md); }
+
+@media (max-width: 768px) {
+  .content { padding: var(--space-4); }
+  .pipeline { display: none; }
+  .th:nth-child(4), .td:nth-child(4) { display: none; }
+  .th:nth-child(5), .td:nth-child(5) { display: none; }
+}
+
+/* View toggle */
+.viewToggle {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.viewToggle:hover { background: var(--color-bg-secondary); color: var(--color-primary); }
+
+/* Grid view */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+.gridCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+.gridCard:hover { box-shadow: var(--shadow-md); }
+.gridCardExpired { border-color: var(--color-danger); }
+.gridHead { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
+.cardActions { display: flex; gap: var(--space-1); flex-shrink: 0; }
+.gridBadges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.gridBadges .expiredBadge { margin-top: 0; }
+
+/* Card layout: grid (default) vs list */
+.gridCard { position: relative; }
+.cardActions { position: absolute; top: var(--space-3); right: var(--space-3); opacity: 0; transition: opacity var(--transition-fast); }
+.gridCard:hover .cardActions { opacity: 1; }
+.cardMain { padding-right: 90px; min-width: 0; }
+.cardDate { margin-top: auto; }
+.listGrid { grid-template-columns: 1fr; gap: var(--space-3); }
+.listCard { flex-direction: row; flex-wrap: wrap; align-items: center; padding: var(--space-3) var(--space-5); gap: var(--space-2) var(--space-5); }
+.listCard .cardMain { flex: 1 1 200px; padding-right: 0; }
+.listCard .cardContact { flex: 0 1 220px; }
+.listCard .cardDate { margin-top: 0; flex: 0 0 150px; }
+.listCard .cardActions { position: static; order: 5; margin-left: auto; }
+.listCard .cardWide { order: 6; flex: 1 0 100%; }
+.listCard .leadDesc { margin: 0; }

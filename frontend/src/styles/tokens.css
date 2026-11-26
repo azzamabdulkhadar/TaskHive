@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════
+   TaskHive Design Tokens — Morphous Arctic Hare (light)
+   Snow-fur surfaces, frost-grey actions, black-eye focus,
+   tundra-lichen success, polar-charcoal sidebar.
+   ═══════════════════════════════════════════════════ */
+:root {
+  /* Brand — frost grey actions */
+  --color-primary:        #46525e;
+  --color-primary-hover:  #2d3640;
+  --color-primary-light:  #e7ecf0;
+  --color-primary-muted:  #9aa8b4;
+  --color-on-primary:     #ffffff;
+
+  /* Semantic */
+  --color-success:        #5d7a4d;   /* tundra lichen */
+  --color-success-light:  #e5ecdd;
+  --color-warning:        #a97a2c;   /* ear-shadow amber */
+  --color-warning-light:  #f4ead3;
+  --color-danger:         #b0443c;
+  --color-danger-light:   #f6e1de;
+  --color-info:           #4a7391;   /* frost blue-grey */
+  --color-info-light:     #e0eaf1;
+
+  /* Extra accents (muted, used by statuses and charts) */
+  --color-accent-rose:        #96606f;
+  --color-accent-rose-light:  #f1e3e7;
+  --color-accent-slate:       #686e99;
+  --color-accent-slate-light: #e6e8f2;
+
+  /* Backgrounds — snow fur */
+  --color-bg:             #f5f7f8;
+  --color-bg-secondary:   #eceff2;
+  --color-surface:        #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-overlay:#ffffff;
+
+  /* Text — black-eye */
+  --color-text:           #14181c;
+  --color-text-secondary: #46515b;
+  --color-text-muted:     #74808b;
+  --color-text-disabled:  #b4bcc4;
+  --color-text-inverse:   #ffffff;
+
+  /* Border — thin cold grey */
+  --color-border:         #dde2e7;
+  --color-border-strong:  #c3cbd3;
+  --color-border-focus:   #14181c;
+
+  /* Sidebar — polar charcoal */
+  --sidebar-bg:           #181d22;
+  --sidebar-text:         #a9b4be;
+  --sidebar-text-active:  #ffffff;
+  --sidebar-item-active:  rgba(255,255,255,0.12);
+  --sidebar-item-hover:   rgba(255,255,255,0.06);
+  --sidebar-width:        240px;
+  --sidebar-collapsed:    64px;
+
+  /* Topbar */
+  --topbar-bg:            #ffffff;
+  --topbar-height:        60px;
+
+  /* Typography */
+  --font-family:          'Geist', 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs:         11px;
+  --font-size-sm:         13px;
+  --font-size-base:       14px;
+  --font-size-md:         15px;
+  --font-size-lg:         16px;
+  --font-size-xl:         18px;
+  --font-size-2xl:        20px;
+  --font-size-3xl:        24px;
+  --font-size-4xl:        28px;
+  --font-size-5xl:        32px;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --line-height-tight:    1.25;
+  --line-height-normal:   1.5;
+  --line-height-relaxed:  1.75;
+
+  /* Spacing */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius — 8px card radius */
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   8px;
+  --radius-2xl:  12px;
+  --radius-full: 9999px;
+
+  /* Shadows — restrained */
+  --shadow-xs:  0 1px 2px rgba(20,24,28,0.04);
+  --shadow-sm:  0 1px 2px rgba(20,24,28,0.06), 0 1px 1px rgba(20,24,28,0.03);
+  --shadow-md:  0 3px 6px rgba(20,24,28,0.07), 0 1px 3px rgba(20,24,28,0.05);
+  --shadow-lg:  0 8px 16px rgba(20,24,28,0.08), 0 3px 6px rgba(20,24,28,0.05);
+  --shadow-xl:  0 16px 28px rgba(20,24,28,0.10), 0 6px 10px rgba(20,24,28,0.05);
+  --shadow-focus: 0 0 0 3px rgba(20,24,28,0.14);
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-base:   200ms ease;
+  --transition-slow:   300ms ease;
+
+  /* Z-index */
+  --z-sidebar:  100;
+  --z-topbar:   200;
+  --z-dropdown: 300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
+
+/* ═══════════════════════════════════════════════════
+   Morphous Arctic Hare — dark (polar charcoal)
+   ═══════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --color-primary:        #cdd6de;
+  --color-primary-hover:  #e4eaef;
+  --color-primary-light:  rgba(205,214,222,0.12);
+  --color-primary-muted:  #6f7c88;
+  --color-on-primary:     #12161a;
+
+  --color-success:        #93b17e;
+  --color-success-light:  rgba(147,177,126,0.14);
+  --color-warning:        #d1a45a;
+  --color-warning-light:  rgba(209,164,90,0.14);
+  --color-danger:         #d9776e;
+  --color-danger-light:   rgba(217,119,110,0.14);
+  --color-info:           #7fa6c4;
+  --color-info-light:     rgba(127,166,196,0.14);
+
+  --color-accent-rose:        #c590a0;
+  --color-accent-rose-light:  rgba(197,144,160,0.14);
+  --color-accent-slate:       #9ba1cc;
+  --color-accent-slate-light: rgba(155,161,204,0.14);
+
+  --color-bg:             #12161a;
+  --color-bg-secondary:   #1b2025;
+  --color-surface:        #1a1f24;
+  --color-surface-raised: #222830;
+  --color-surface-overlay:#2a313a;
+
+  --color-text:           #eef2f5;
+  --color-text-secondary: #a6b1bb;
+  --color-text-muted:     #75818c;
+  --color-text-disabled:  #4b555e;
+  --color-text-inverse:   #12161a;
+
+  --color-border:         #2a323a;
+  --color-border-strong:  #3a444e;
+  --color-border-focus:   #eef2f5;
+
+  --sidebar-bg:           #0e1215;
+  --sidebar-text:         #8f9ba6;
+  --sidebar-text-active:  #eef2f5;
+  --sidebar-item-active:  rgba(238,242,245,0.12);
+  --sidebar-item-hover:   rgba(255,255,255,0.05);
+
+  --topbar-bg:            #1a1f24;
+
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 8px rgba(0,0,0,0.38), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-lg:  0 10px 18px rgba(0,0,0,0.42), 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-xl:  0 20px 28px rgba(0,0,0,0.46), 0 10px 10px rgba(0,0,0,0.3);
+  --shadow-focus: 0 0 0 3px rgba(238,242,245,0.2);
+}
